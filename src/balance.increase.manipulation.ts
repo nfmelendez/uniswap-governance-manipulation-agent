@@ -47,8 +47,7 @@ function provideHandleTransaction(contractUtils: ContractUtils) {
               metadata: {
                 voter: voter,
                 proposalId: proposalId.toString(),
-                votetimesChange: votesChangeRate.toString(),
-                maxVoteTimes: MANIPULATION_TRIGGER_VOTES_TIMES
+                votetimesChange: votesChangeRate.toString()
               },
             })
           );
@@ -64,8 +63,7 @@ function provideHandleTransaction(contractUtils: ContractUtils) {
           protocol : PROTOCOL,
           metadata: {
             voter: voter,
-            proposalId: proposalId,
-            maxVoteTimes: MANIPULATION_TRIGGER_VOTES_TIMES
+            proposalId: proposalId.toString()
           },
         })
       );

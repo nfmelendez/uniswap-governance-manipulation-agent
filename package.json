@@ -1,7 +1,7 @@
 {
-  "name": "oz-uupsupgradeable-contract-agent",
+  "name": "uniswap-governance-manipulation-gent",
   "version": "1.0.0",
-  "description": "This agent detects when the UUPSUpgradeable contract is upgraded and then selfdestructed leaving the contract broken and funds locked.",
+  "description": "This agent detects manipulations in uniswap governace protocol.",
   "scripts": {
     "build": "tsc",
     "start": "npm run start:dev",

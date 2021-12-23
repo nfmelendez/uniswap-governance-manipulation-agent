@@ -47,8 +47,7 @@ function provideHandleTransaction(contractUtils: ContractUtils) {
             metadata: {
               voter: voter,
               proposalId: proposalId.toString(),
-              votetimesChange: votesChangeRatePercent.toString(),
-              maxVotedecreasePercent: String(DECREASE_MANIPULATION_TRIGGER_VOTES_PERCENT)
+              votesChangeRatePercent: votesChangeRatePercent.toString()
             },
           })
         );

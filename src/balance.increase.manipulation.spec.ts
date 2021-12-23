@@ -13,7 +13,6 @@ import {
   BLOCKS_BEFORE_PROPOSAL_START,
   UNISWAP_GOV_PROPOSAL_MANIPULATION_1_ALERTID,
   PROTOCOL,
-  MANIPULATION_TRIGGER_VOTES_TIMES,
   UNISWAP_GOV_PROPOSAL_MANIPULATION_2_ALERTID
  } from './constants'
  
@@ -86,8 +85,7 @@ describe("Uniswap governance manipulation agent", () => {
         metadata: {
           voter: voter,
           proposalId: proposalId.toString(),
-          votetimesChange: '1.23',
-          maxVoteTimes: MANIPULATION_TRIGGER_VOTES_TIMES
+          votetimesChange: '1.23'
         },
       });
 
@@ -121,8 +119,7 @@ describe("Uniswap governance manipulation agent", () => {
         protocol : PROTOCOL,
         metadata: {
           voter: voter,
-          proposalId: proposalId,
-          maxVoteTimes: MANIPULATION_TRIGGER_VOTES_TIMES
+          proposalId: proposalId
         },
       });
 

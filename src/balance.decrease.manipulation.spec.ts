@@ -85,8 +85,7 @@ describe("Uniswap governance decrease votes manipulation agent", () => {
         metadata: {
           voter: voter,
           proposalId: proposalId.toString(),
-          votetimesChange: '50',
-          maxVotedecreasePercent: String(DECREASE_MANIPULATION_TRIGGER_VOTES_PERCENT)
+          votesChangeRatePercent: '50'
         },
       });
 
