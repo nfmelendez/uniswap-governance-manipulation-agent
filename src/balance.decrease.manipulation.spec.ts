@@ -1,11 +1,10 @@
+import BigNumber from 'bignumber.js';
+
 import {
   FindingType,
   FindingSeverity,
   Finding,
 } from "forta-agent"
-
-import BigNumber from 'bignumber.js';
-
 
 import { 
   BLOCKS_BEFORE_VOTE_CAST,
@@ -14,7 +13,7 @@ import {
   DECREASE_MANIPULATION_TRIGGER_VOTES_PERCENT
  } from './constants'
  
- import { TestUtils } from './testUtils'
+import { TestUtils } from './testUtils'
 import balanceDecreaseManipulation from "./balance.decrease.manipulation";
 
 const utils = new TestUtils();

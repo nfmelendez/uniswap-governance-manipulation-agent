@@ -1,12 +1,11 @@
+import BigNumber from 'bignumber.js';
+
 import { 
   Finding, 
   TransactionEvent, 
   FindingSeverity, 
   FindingType 
 } from 'forta-agent'
-
-import BigNumber from 'bignumber.js';
-
 
 import { VOTECAST_EVENT,
   UNISWAP_GOV_PROPOSAL_MANIPULATION_3_ALERTID,
@@ -33,7 +32,6 @@ function provideHandleTransaction(contractUtils: ContractUtils) {
       const priorVoteCastCount: BigNumber = await contractUtils.getVoteCastPriorVotes(txEvent.blockNumber, voter);
       const votesChangeRate:BigNumber = new BigNumber(1).minus(currentVotes.dividedBy(priorVoteCastCount))
       const maxChangeVotesBeforeVoteCast = new BigNumber(DECREASE_MANIPULATION_TRIGGER_VOTES_PERCENT).multipliedBy(new BigNumber('0.01'));
-      //console.log(`current ${currentVotes}  prior ${priorVotesCount} [${currentVotes.minus(priorVotesCount)}] times ${votesChangeRate} max ${maxVoteTimes}`)
       if (votesChangeRate.isPositive() && votesChangeRate.gte(maxChangeVotesBeforeVoteCast)) {
         const votesChangeRatePercent = votesChangeRate.multipliedBy(new BigNumber(100))
         findings.push(

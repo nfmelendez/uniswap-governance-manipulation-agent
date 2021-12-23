@@ -19,7 +19,7 @@ export class ContractUtils {
         this.provider = new ethers.providers.StaticJsonRpcProvider(getJsonRpcUrl());
     }
 
-    // asks the Uniswap governor bravo details about the proposal
+    // asks the Uniswap governor bravo the start block of the proposal
     // @param proposalId The proposal id
     private async fetchProposalStartBlock(proposalId: Number): Promise<any> {
         const governorBravoDelegator = new ethers.Contract(UNISWAP_GOVERNOR_BRAVO_DELEGATOR_ADDRESS,

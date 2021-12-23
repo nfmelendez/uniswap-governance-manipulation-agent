@@ -34,7 +34,6 @@ function provideHandleTransaction(contractUtils: ContractUtils) {
       if (!priorVotesCount.isZero()) {
         const votesChangeRate:BigNumber = currentVotes.dividedBy(priorVotesCount)
         const maxVoteTimes = new BigNumber(MANIPULATION_TRIGGER_VOTES_TIMES)
-        //console.log(`current ${currentVotes}  prior ${priorVotesCount} [${currentVotes.minus(priorVotesCount)}] times ${votesChangeRate} max ${maxVoteTimes}`)
         if (votesChangeRate.gte(maxVoteTimes)) {
           findings.push(
             Finding.fromObject({
