@@ -39,9 +39,9 @@ This agent detects manipulations in the uniswap governace protocol. It can detec
 
 The agent behaviour can be verified with the following transactions:
 - UNISWAP-GOV-PROPOSAL-MANIPULATION-1
-  - Modify BLOCKS_BEFORE_PROPOSAL_START = 1264630 in constants.ts 
-  - forta-agent run --tx 0xd42c2a97d14d1faaf9037445bd5b0d117e9d077455ec188a9cca89239cbcc59e (throw UNISWAP-GOV-PROPOSAL-MANIPULATION-1)
+  1. Modify BLOCKS_BEFORE_PROPOSAL_START = 1264630 in constants.ts 
+  2. forta-agent run --tx 0xd42c2a97d14d1faaf9037445bd5b0d117e9d077455ec188a9cca89239cbcc59e (throw UNISWAP-GOV-PROPOSAL-MANIPULATION-1)
 - UNISWAP-GOV-PROPOSAL-MANIPULATION-2
-  - Modify BLOCKS_BEFORE_PROPOSAL_START = 1264630 in constants.ts 
-  - forta-agent run --tx 0x0a4a0a8888fba93c97aebe754981721190e2f4b30d3b42507c7620e343f5c0ef (throw UNISWAP-GOV-PROPOSAL-MANIPULATION-2)
+  1. Modify BLOCKS_BEFORE_PROPOSAL_START = 1264630 in constants.ts 
+  2. forta-agent run --tx 0x0a4a0a8888fba93c97aebe754981721190e2f4b30d3b42507c7620e343f5c0ef (throw UNISWAP-GOV-PROPOSAL-MANIPULATION-2)
   
