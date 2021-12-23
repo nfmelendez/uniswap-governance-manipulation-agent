@@ -2,7 +2,7 @@
 
 ## Description
 
-This agent detects manipulations in the uniswap governace protocol.It can detect when a voter had a significant vote increase, when there is a significant vote decrease and also when a newcomer shows.
+This agent detects manipulations in the uniswap governace protocol. It can detect when a voter has a significant vote increase, when there is a significant vote decrease and also when a newcomer shows up.
 
 ## Supported Chains
 
@@ -20,7 +20,7 @@ This agent detects manipulations in the uniswap governace protocol.It can detect
     - `votetimesChange` Times the votes increased 100 blocks prior start of the proposal
 
 - UNISWAP-GOV-PROPOSAL-MANIPULATION-2
-  - Fired when an uniswap governance proposal is being manipulated. It detects when there is a newcomer to proposal at the moment of the vote cast.A newcomer is an user that didn't have votes 100 blocks prior to the proposal start but now it has
+  - Fired when an uniswap governance proposal is being manipulated. It detects when there is a newcomer to proposal at the moment of the vote cast. A newcomer is an user that didn't have votes 100 blocks prior to the proposal start but now it has
   - Severity is always set to "critical" as the newcomer can manipulate the result of the proposal.
   - Type is always set to "Suspicious" as someone who didn't have votes, suddenly it has.
     - `voter` address of the voter
