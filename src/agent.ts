@@ -5,16 +5,16 @@ import {
   FindingType 
 } from 'forta-agent'
 
-import { BigNumber } from '@ethersproject/bignumber';
+import BigNumber from 'bignumber.js';
+
 
 import { VOTECAST_EVENT,
-  BLOCKS_BEFORE_PROPOSAL_START,
   UNISWAP_GOV_PROPOSAL_MANIPULATION_1_ALERTID,
-  UNISWAP_GOV_PROPOSAL_MANIPULATION_1_NAME,
-  UNISWAP_GOV_PROPOSAL_MANIPULATION_1_DESCRIPTION,
   PROTOCOL,
-  MANIPULATION_TRIGGER_PERCENTAGE,
-  UNISWAP_GOVERNOR_BRAVO_DELEGATOR_ADDRESS
+  MANIPULATION_TRIGGER_VOTES_TIMES,
+  UNISWAP_GOVERNOR_BRAVO_DELEGATOR_ADDRESS,
+  UNISWAP_GOV_PROPOSAL_MANIPULATION_2_ALERTID,
+  BLOCKS_BEFORE_PROPOSAL_START
  } from './constants'
 
 import { ContractUtils } from './ContractUtils';
@@ -25,44 +25,55 @@ function provideHandleTransaction(contractUtils: ContractUtils) {
   return async function handleTransaction(txEvent: TransactionEvent) {
     const findings: Finding[] = []
 
-    const voteCastEvents = txEvent.filterLog(
-      VOTECAST_EVENT
-    );
+    const voteCastEvents = txEvent.filterLog(VOTECAST_EVENT, UNISWAP_GOVERNOR_BRAVO_DELEGATOR_ADDRESS);
+
     for (const voteCast of voteCastEvents) {
-      if (voteCast.address.toLowerCase() != UNISWAP_GOVERNOR_BRAVO_DELEGATOR_ADDRESS.toLowerCase()) continue;
-      const {proposalId, voter, votes } = voteCast.args;
-      const proposal = await contractUtils.proposalProp(proposalId);
-      const startBlock: BigNumber = proposal.startBlock;
-      const fetchBlock = startBlock.sub(BLOCKS_BEFORE_PROPOSAL_START);
-      const priorVotesCount = await contractUtils.getPriorVotes(voter, fetchBlock);
+      const {proposalId, voter } = voteCast.args;
+      const currentVotes: BigNumber = new BigNumber(voteCast.args.votes.toBigInt())
+      const priorVotesCount: BigNumber = await contractUtils.getPriorVotes(proposalId, voter);
       if (!priorVotesCount.isZero()) {
-        const p:BigNumber = votes.div(priorVotesCount);
-        console.log(`current ${votes}  prior ${priorVotesCount} por ${p}`)
-        if (p.gte(MANIPULATION_TRIGGER_PERCENTAGE)) {
+        const votesChangeRate:BigNumber = currentVotes.dividedBy(priorVotesCount)
+        const maxVoteTimes = new BigNumber(MANIPULATION_TRIGGER_VOTES_TIMES)
+        //console.log(`current ${currentVotes}  prior ${priorVotesCount} [${currentVotes.minus(priorVotesCount)}] times ${votesChangeRate} max ${maxVoteTimes}`)
+        if (votesChangeRate.gte(maxVoteTimes)) {
           findings.push(
             Finding.fromObject({
-              name: UNISWAP_GOV_PROPOSAL_MANIPULATION_1_NAME,
-              description: UNISWAP_GOV_PROPOSAL_MANIPULATION_1_DESCRIPTION,
               alertId: UNISWAP_GOV_PROPOSAL_MANIPULATION_1_ALERTID,
+              name: `Uniswap governance proposal ${proposalId.toString()} manipulation detected.`,
+              description: `Voter with address ${voter} had an increase of ${votesChangeRate.toString()} times in vote numbers, since ${BLOCKS_BEFORE_PROPOSAL_START} blocks before the start of the proposal`,
               severity: FindingSeverity.Critical,
               type: FindingType.Suspicious,
               protocol : PROTOCOL,
               metadata: {
                 voter: voter,
-                proposalId: proposalId.toNumber(),
-                percentage: p.mul(100).toString(),
-                maxPercentageChangeAccepted: MANIPULATION_TRIGGER_PERCENTAGE.toString()
+                proposalId: proposalId.toString(),
+                votetimesChange: votesChangeRate.toString(),
+                maxVoteTimes: MANIPULATION_TRIGGER_VOTES_TIMES
               },
             })
           );
         }
     } else {
-      console.log('New commer')
+      findings.push(
+        Finding.fromObject({
+          alertId: UNISWAP_GOV_PROPOSAL_MANIPULATION_2_ALERTID,
+          name: `Uniswap governance proposal ${proposalId.toString()} new voter detected`,
+          description: `Voter with address ${voter} has ${currentVotes.toString()} votes now but has 0 votes ${BLOCKS_BEFORE_PROPOSAL_START} blocks before the start of the proposal`,
+          severity: FindingSeverity.Info,
+          type: FindingType.Suspicious,
+          protocol : PROTOCOL,
+          metadata: {
+            voter: voter,
+            proposalId: proposalId,
+            maxVoteTimes: MANIPULATION_TRIGGER_VOTES_TIMES
+          },
+        })
+      );
     }
     }
 
     return findings
-}
+  }
 }
 
 export default {

@@ -1,5 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber';
-
 // protocol is uniswap governance
 export const PROTOCOL = 'uniswap governance';
 
@@ -23,18 +21,16 @@ export const UNI_TOKEN_ABI = [
     "function getPriorVotes(address account, uint blockNumber) public view returns (uint96)"
 ];
 
-export const BLOCKS_BEFORE_PROPOSAL_START = 1264630;//100;
+// blocks before the start of the proposal, we can use some data of mainnet if we use a big offset like 1264630
+export const BLOCKS_BEFORE_PROPOSAL_START = 100;
 
 export const BLOCKS_BEFORE_VOTE_CAST = 100;
 
-// % that triggers the uniswap proposal manipulation alert, 10 is 10% of change
-export const MANIPULATION_TRIGGER_PERCENTAGE = 10;
+// votes times in relation to pior the proposal that triggers manipulation alert. 
+// for example: '1.2' is 1.2 times votes since 100 blocks before the proposal
+export const MANIPULATION_TRIGGER_VOTES_TIMES = '1.2';
 
-// 0x represents a contract without code
-export const DESTROYED_CONTRACT = "0x";
-// alert id
+// alert id 1: a voter has too much votes than pior the start of the proposal.
 export const UNISWAP_GOV_PROPOSAL_MANIPULATION_1_ALERTID = "UNISWAP-GOV-PROPOSAL-MANIPULATION-1";
-// alert name
-export const UNISWAP_GOV_PROPOSAL_MANIPULATION_1_NAME = "OpenZeppelin UUPSUpgradeable contract selfdestructed";
-// alert description
-export const UNISWAP_GOV_PROPOSAL_MANIPULATION_1_DESCRIPTION = "UUPSUpgradeable contract was upgraded and selfdestructed. Funds are locked and impossible to rollback";
+// alert id 2: Newcomer, a voter didn't have any vote prior the proposal but now it has.
+export const UNISWAP_GOV_PROPOSAL_MANIPULATION_2_ALERTID = "UNISWAP-GOV-PROPOSAL-MANIPULATION-2";

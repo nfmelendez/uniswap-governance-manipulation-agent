@@ -1,13 +1,13 @@
 import { ethers } from 'ethers';
-import { BigNumber } from '@ethersproject/bignumber';
+import BigNumber from 'bignumber.js';
 import { getJsonRpcUrl } from 'forta-agent';
 
 import { 
-    DESTROYED_CONTRACT,
     UNISWAP_GOVERNOR_BRAVO_DELEGATOR_ADDRESS,
     UNISWAP_GOVERNOR_BRAVO_DELEGATOR_ABI,
     UNI_CONTRACT_ADDRESS,
-    UNI_TOKEN_ABI
+    UNI_TOKEN_ABI,
+    BLOCKS_BEFORE_PROPOSAL_START
 } from './constants'
 
 export class ContractUtils {
@@ -18,24 +18,21 @@ export class ContractUtils {
         this.provider = new ethers.providers.StaticJsonRpcProvider(getJsonRpcUrl());
     }
 
-    public async isContractEmpty(address: string): Promise<boolean> {
-        // query the contract code
-        const contractCode = await this.provider.getCode(address);
-        return contractCode == DESTROYED_CONTRACT;
-    }
-
-    public async proposalProp(proposalId: Number): Promise<any> {
+    private async fetchProposalStartBlock(proposalId: Number): Promise<any> {
         const governorBravoDelegator = new ethers.Contract(UNISWAP_GOVERNOR_BRAVO_DELEGATOR_ADDRESS,
             UNISWAP_GOVERNOR_BRAVO_DELEGATOR_ABI, this.provider);
         const proposal = await governorBravoDelegator.proposals(proposalId);
-        return proposal;
+        return proposal.startBlock;
     }
 
-    public async getPriorVotes(address: string, blockNumber: BigNumber): Promise<any> {
+    public async getPriorVotes(proposalId: Number, address: string): Promise<BigNumber> {
+        const startBlock = await this.fetchProposalStartBlock(proposalId);
+        const fetchBlock = startBlock.sub(BLOCKS_BEFORE_PROPOSAL_START);
+
         const uniTokenContract = new ethers.Contract(UNI_CONTRACT_ADDRESS,
             UNI_TOKEN_ABI, this.provider);
-        const votesCount = await uniTokenContract.getPriorVotes(address, blockNumber);
-        return votesCount;
+        const votesCount = await uniTokenContract.getPriorVotes(address, fetchBlock);
+        return new BigNumber(votesCount.toBigInt());
     }
     
 }

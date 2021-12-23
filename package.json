@@ -21,7 +21,8 @@
     "mytx24": "npm run build && forta-agent run --tx 0x8be795ee34ccab79aa172154d0c45c80cdcda82fffdc9e07ee44596ea00cb5d6"
   },
   "dependencies": {
-    "forta-agent": "^0.0.32"
+    "forta-agent": "^0.0.32",
+    "bignumber.js": "^9.0.1"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
