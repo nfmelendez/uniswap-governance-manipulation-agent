@@ -15,8 +15,10 @@ export const UNISWAP_GOVERNOR_BRAVO_DELEGATOR_ABI = [
     "function proposals(uint) public view returns ( (uint256 id, address proposer, uint256 eta, uint256 startBlock, uint256 endBlock, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes, bool canceled, bool executed) proposal)"
 ];
 
+// UNI token contract address.UNI token has checkpoints to know how many votes a vooter has in a given moment
 export const UNI_CONTRACT_ADDRESS = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
 
+// UNI token contract ABI. 
 export const UNI_TOKEN_ABI = [ 
     "function getPriorVotes(address account, uint blockNumber) public view returns (uint96)"
 ];
@@ -24,13 +26,20 @@ export const UNI_TOKEN_ABI = [
 // blocks before the start of the proposal, we can use some data of mainnet if we use a big offset like 1264630
 export const BLOCKS_BEFORE_PROPOSAL_START = 100;
 
+// blocks before vote cast
 export const BLOCKS_BEFORE_VOTE_CAST = 100;
 
 // votes times in relation to pior the proposal that triggers manipulation alert. 
 // for example: '1.2' is 1.2 times votes since 100 blocks before the proposal
 export const MANIPULATION_TRIGGER_VOTES_TIMES = '1.2';
 
+// Max decrease in votes in the vote cast compared to $BLOCKS_BEFORE_VOTE_CAST previous to the vote cast
+export const DECREASE_MANIPULATION_TRIGGER_VOTES_PERCENT = 50;
+
+
 // alert id 1: a voter has too much votes than pior the start of the proposal.
 export const UNISWAP_GOV_PROPOSAL_MANIPULATION_1_ALERTID = "UNISWAP-GOV-PROPOSAL-MANIPULATION-1";
 // alert id 2: Newcomer, a voter didn't have any vote prior the proposal but now it has.
 export const UNISWAP_GOV_PROPOSAL_MANIPULATION_2_ALERTID = "UNISWAP-GOV-PROPOSAL-MANIPULATION-2";
+// alert id 3: A voter had a significant decrease in votes compared to some blocks before the votecast
+export const UNISWAP_GOV_PROPOSAL_MANIPULATION_3_ALERTID = "UNISWAP-GOV-PROPOSAL-MANIPULATION-3";
